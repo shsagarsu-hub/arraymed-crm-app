@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ArrayMed CRM">
+    
+    <title>ArrayMed CRM App</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- iOS Icons -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23667eea' width='100' height='100' rx='20'/><text x='50' y='70' font-size='60' text-anchor='middle' fill='white' font-family='Arial, sans-serif' font-weight='bold'>A</text></svg>">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            background: white;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: bold;
+            color: #667eea;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .app-title {
+            color: white;
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 5px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .app-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .container {
+            flex: 1;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .card:active {
+            transform: scale(0.98);
+        }
+        
+        .card-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .card-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        
+        .card-description {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn:active {
+            transform: scale(0.95);
+        }
+        
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #667eea;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .quick-actions {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 10px;
+        }
+        
+        .quick-actions-title {
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+        
+        .quick-action-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .quick-action {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .quick-action:active {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(0.95);
+        }
+        
+        .quick-action-icon {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        .footer {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            text-align: center;
+            color: white;
+            font-size: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .install-prompt {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            display: none;
+        }
+        
+        .install-prompt.show {
+            display: block;
+        }
+        
+        .install-prompt-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .install-prompt-text {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .install-btn {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        }
+        
+        .install-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-left: 8px;
+            text-transform: uppercase;
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                padding: 40px;
+            }
+            
+            .card {
+                padding: 35px;
+            }
+        }
+        
+        /* Loading animation */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .loading.show {
+            display: flex;
+        }
+        
+        .loading-spinner {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">A</div>
+        <div class="app-title">ArrayMed CRM</div>
+        <div class="app-subtitle">Sales Management System</div>
+    </div>
+    
+    <div class="container">
+        <!-- Install Prompt -->
+        <div class="install-prompt" id="installPrompt">
+            <div class="install-prompt-title">📱 Install App</div>
+            <div class="install-prompt-text">
+                Add ArrayMed CRM to your home screen for quick access and app-like experience!
+            </div>
+            <button class="install-btn" id="installBtn">Install App</button>
+        </div>
+        
+        <!-- Main Actions -->
+        <div class="card">
+            <span class="card-icon">📋</span>
+            <h2 class="card-title">Submit New Lead <span class="badge">Quick</span></h2>
+            <p class="card-description">
+                Add a new hospital lead to the system. Takes 2-3 minutes to fill out the form.
+            </p>
+            <a href="https://tinyurl.com/AMPL-Leads" class="btn" target="_blank" onclick="trackClick('Lead Form')">
+                Open Lead Form
+            </a>
+        </div>
+        
+        <div class="card">
+            <span class="card-icon">📊</span>
+            <h2 class="card-title">CRM Dashboard</h2>
+            <p class="card-description">
+                View your pipeline, update deals, check stats, and manage your sales activities.
+            </p>
+            <a href="https://tinyurl.com/AMPL-CRM-V2" class="btn" target="_blank" onclick="trackClick('CRM Dashboard')">
+                Open Dashboard
+            </a>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <div class="quick-actions-title">⚡ Quick Actions</div>
+            <div class="quick-action-grid">
+                <a href="https://tinyurl.com/AMPL-Leads" class="quick-action" target="_blank" onclick="trackClick('Quick Lead')">
+                    <span class="quick-action-icon">➕</span>
+                    New Lead
+                </a>
+                <a href="https://tinyurl.com/AMPL-CRM-V2" class="quick-action" target="_blank" onclick="trackClick('Quick Dashboard')">
+                    <span class="quick-action-icon">📈</span>
+                    My Stats
+                </a>
+                <a href="tel:+918000000000" class="quick-action" onclick="trackClick('Call Support')">
+                    <span class="quick-action-icon">📞</span>
+                    Support
+                </a>
+                <a href="mailto:support@arraymed.co.in" class="quick-action" onclick="trackClick('Email Support')">
+                    <span class="quick-action-icon">✉️</span>
+                    Email IT
+                </a>
+            </div>
+        </div>
+        
+        <!-- Help Section -->
+        <div class="card">
+            <span class="card-icon">📚</span>
+            <h2 class="card-title">Need Help?</h2>
+            <p class="card-description">
+                Access the user manual, FAQs, and training resources.
+            </p>
+            <a href="#" class="btn btn-secondary" onclick="showHelp(); return false;">
+                View Help Guide
+            </a>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div>ArrayMed Private Limited</div>
+        <div style="opacity: 0.7; margin-top: 5px;">© 2026 - Sales CRM v2.0</div>
+    </div>
+    
+    <!-- Loading Overlay -->
+    <div class="loading" id="loading">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <div>Opening...</div>
+        </div>
+    </div>
+
+    <script>
+        // PWA Install functionality
+        let deferredPrompt;
+        const installPrompt = document.getElementById('installPrompt');
+        const installBtn = document.getElementById('installBtn');
+        
+        // Check if already installed
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            console.log('App is installed');
+        } else {
+            // Show install prompt for supported browsers
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                installPrompt.classList.add('show');
+            });
+        }
+        
+        // Install button click
+        installBtn.addEventListener('click', async () => {
+            if (!deferredPrompt) {
+                // For iOS, show manual instructions
+                if (isIOS()) {
+                    showIOSInstallInstructions();
+                    return;
+                }
+                alert('Installation not available. Please use Chrome or Safari.');
+                return;
+            }
+            
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            
+            if (outcome === 'accepted') {
+                console.log('App installed');
+                installPrompt.classList.remove('show');
+            }
+            
+            deferredPrompt = null;
+        });
+        
+        // Detect iOS
+        function isIOS() {
+            return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        }
+        
+        // iOS install instructions
+        function showIOSInstallInstructions() {
+            alert('To install on iOS:\n\n1. Tap the Share button (⬆️)\n2. Scroll down and tap "Add to Home Screen"\n3. Tap "Add" in the top right');
+        }
+        
+        // Track clicks (for analytics)
+        function trackClick(action) {
+            console.log('User clicked:', action);
+            // You can integrate with Google Analytics here
+            
+            // Show loading briefly
+            const loading = document.getElementById('loading');
+            loading.classList.add('show');
+            setTimeout(() => {
+                loading.classList.remove('show');
+            }, 500);
+        }
+        
+        // Show help
+        function showHelp() {
+            alert('Help Resources:\n\n' +
+                  '📖 User Manual - Check your email\n' +
+                  '❓ FAQs - Contact your manager\n' +
+                  '🎓 Training - Weekly sessions\n' +
+                  '📞 Support - support@arraymed.co.in\n\n' +
+                  'For urgent issues, contact IT immediately.');
+        }
+        
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(registration => {
+                        console.log('SW registered:', registration);
+                    })
+                    .catch(error => {
+                        console.log('SW registration failed:', error);
+                    });
+            });
+        }
+        
+        // Add haptic feedback on iOS
+        document.querySelectorAll('.btn, .quick-action').forEach(element => {
+            element.addEventListener('touchstart', () => {
+                if (navigator.vibrate) {
+                    navigator.vibrate(10);
+                }
+            });
+        });
+        
+        // Prevent zoom on double-tap (iOS)
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', (event) => {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
+</body>
+</html>
