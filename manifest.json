@@ -2,12 +2,12 @@
   "name": "ArrayMed CRM - Sales Management",
   "short_name": "ArrayMed CRM",
   "description": "ArrayMed Private Limited Sales CRM - Manage your hospital leads and pipeline",
-  "start_url": "/",
+  "start_url": "/arraymed-crm-app/",
   "display": "standalone",
   "background_color": "#667eea",
   "theme_color": "#667eea",
   "orientation": "portrait",
-  "scope": "/",
+  "scope": "/arraymed-crm-app/",
   "icons": [
     {
       "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23667eea' width='192' height='192' rx='40'/><text x='96' y='140' font-size='120' text-anchor='middle' fill='white' font-family='Arial, sans-serif' font-weight='bold'>A</text></svg>",
