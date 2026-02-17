@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <base target="_top">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArrayMed Sales CRM - Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', -apple-system, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Animated background particles */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .login-container {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+            padding: 50px 45px;
+            width: 100%;
+            max-width: 440px;
+            position: relative;
+            z-index: 1;
+            animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .logo-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            box-shadow: 
+                0 10px 30px rgba(102, 126, 234, 0.4),
+                0 0 0 4px rgba(102, 126, 234, 0.1);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .logo h1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        
+        .logo p {
+            color: #6c757d;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: #2c3e50;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 0.3px;
+        }
+        
+        .input-wrapper {
+            position: relative;
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 15px 18px 15px 50px;
+            border: 2px solid #e8ecf0;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #f8fafb;
+            font-weight: 500;
+        }
+        
+        .form-group input:hover {
+            border-color: #c5d0e0;
+            background: white;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border: 2px solid transparent;
+            background: white;
+            background-image: linear-gradient(white, white), 
+                              linear-gradient(135deg, #667eea, #764ba2);
+            background-origin: padding-box, border-box;
+            background-clip: padding-box, border-box;
+            box-shadow: 
+                0 0 0 4px rgba(102, 126, 234, 0.1),
+                0 8px 16px rgba(102, 126, 234, 0.15);
+        }
+        
+        .form-group input:focus + .input-icon {
+            opacity: 0.8;
+            color: #667eea;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                0 10px 30px rgba(102, 126, 234, 0.4),
+                0 0 0 0 rgba(102, 126, 234, 0.5);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+            margin-top: 10px;
+        }
+        
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .login-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 15px 40px rgba(102, 126, 234, 0.5),
+                0 0 0 8px rgba(102, 126, 234, 0.1);
+        }
+        
+        .login-btn:active {
+            transform: translateY(0);
+        }
+        
+        .login-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .login-btn span {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .error-message {
+            background: linear-gradient(135deg, #fee 0%, #fdd 100%);
+            color: #c33;
+            padding: 14px 18px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            display: none;
+            border-left: 4px solid #c33;
+            animation: shake 0.5s;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        
+        .loading {
+            text-align: center;
+            color: #667eea;
+            margin-top: 20px;
+            display: none;
+            font-weight: 600;
+            font-size: 15px;
+        }
+        
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-left: 10px;
+            border: 3px solid #667eea;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .footer-text {
+            text-align: center;
+            margin-top: 30px;
+            color: #6c757d;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .footer-text a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 700;
+        }
+        
+        .footer-text a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Responsive */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 40px 30px;
+            }
+            
+            .logo h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <div class="logo-icon">📊</div>
+            <h1>ArrayMed CRM</h1>
+            <p>Sales Dashboard Login</p>
+        </div>
+        
+        <div id="errorMessage" class="error-message"></div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <div class="input-wrapper">
+                    <input type="email" id="email" name="email" required placeholder="your.email@arraymed.co.in" autocomplete="email">
+                    <span class="input-icon">📧</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-wrapper">
+                    <input type="password" id="password" name="password" required placeholder="Enter your password" autocomplete="current-password">
+                    <span class="input-icon">🔒</span>
+                </div>
+            </div>
+            
+            <button type="submit" class="login-btn" id="loginBtn">
+                <span>Sign In to Dashboard</span>
+            </button>
+            <div class="loading" id="loading">Logging in</div>
+        </form>
+        
+        <div class="footer-text">
+            Secure access to your sales pipeline
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('errorMessage');
+            const loginBtn = document.getElementById('loginBtn');
+            const loading = document.getElementById('loading');
+            
+            // Clear previous errors
+            errorDiv.style.display = 'none';
+            errorDiv.textContent = '';
+            
+            // Disable button and show loading
+            loginBtn.disabled = true;
+            loading.style.display = 'block';
+            
+            // Call server-side function
+            google.script.run
+                .withSuccessHandler(function(result) {
+                    if (result.success) {
+                        // Store user info in sessionStorage
+                        sessionStorage.setItem('userEmail', result.email);
+                        sessionStorage.setItem('userName', result.name);
+                        sessionStorage.setItem('userRole', result.role);
+                        sessionStorage.setItem('sheetName', result.sheetName);
+                        sessionStorage.setItem('canView', result.canView);
+                        sessionStorage.setItem('reportsTo', result.reportsTo);
+                        
+                        // Load dashboard HTML
+                        google.script.run
+                            .withSuccessHandler(function(dashboardHtml) {
+                                console.log('Dashboard HTML received, length:', dashboardHtml ? dashboardHtml.length : 0);
+                                
+                                // Check if we got an error page instead of dashboard
+                                if (dashboardHtml && dashboardHtml.includes('Failed to Load Dashboard')) {
+                                    // Show the error page
+                                    document.open();
+                                    document.write(dashboardHtml);
+                                    document.close();
+                                } else if (dashboardHtml && dashboardHtml.length > 100) {
+                                    // Valid dashboard received
+                                    document.open();
+                                    document.write(dashboardHtml);
+                                    document.close();
+                                } else {
+                                    // Invalid or empty response
+                                    errorDiv.textContent = 'Dashboard file is empty or invalid. Please check Dashboard_enhanced.html exists and has content.';
+                                    errorDiv.style.display = 'block';
+                                    loginBtn.disabled = false;
+                                    loading.style.display = 'none';
+                                }
+                            })
+                            .withFailureHandler(function(error) {
+                                console.error('Dashboard load error:', error);
+                                errorDiv.innerHTML = `
+                                    <strong>Failed to load dashboard</strong><br>
+                                    <small style="font-weight: normal; display: block; margin-top: 8px;">
+                                        Error: ${error.message || error.toString()}<br><br>
+                                        <strong>Common fixes:</strong><br>
+                                        1. Check if "Dashboard_enhanced" file exists in Apps Script<br>
+                                        2. Verify file is not empty<br>
+                                        3. Redeploy web app with "New version"<br>
+                                        4. Check execution logs in Apps Script
+                                    </small>
+                                `;
+                                errorDiv.style.display = 'block';
+                                loginBtn.disabled = false;
+                                loading.style.display = 'none';
+                            })
+                            .getDashboardHtml();
+                    } else {
+                        errorDiv.textContent = result.message || 'Invalid email or password';
+                        errorDiv.style.display = 'block';
+                        loginBtn.disabled = false;
+                        loading.style.display = 'none';
+                    }
+                })
+                .withFailureHandler(function(error) {
+                    errorDiv.textContent = 'An error occurred. Please try again.';
+                    errorDiv.style.display = 'block';
+                    loginBtn.disabled = false;
+                    loading.style.display = 'none';
+                })
+                .authenticateUser(email, password);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <base target="_top">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ArrayMed Sales CRM - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', -apple-system, sans-serif;
+        }
+        
+        body {
+            background: #f5f7fa;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1600px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        .header h1 {
+            font-size: 20px;
+            font-weight: 800;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .user-details {
+            text-align: right;
+            padding: 6px 12px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 8px;
+            font-size: 13px;
+        }
+        
+        .user-name {
+            font-weight: 700;
+        }
+        
+        .user-role {
+            font-size: 11px;
+            opacity: 0.9;
+        }
+        
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px 16px;
+        }
+        
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+        
+        .stat-label {
+            color: #6c757d;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #f0f4f7;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        .section-header h2 {
+            font-size: 18px;
+            font-weight: 800;
+            color: #2c3e50;
+        }
+        
+        .refresh-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+        
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        /* Team Selection Styles */
+        .team-select-container {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+        
+        .team-select-header {
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #2c3e50;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .team-checkboxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        
+        .team-checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            background: white;
+            border-radius: 6px;
+            border: 2px solid #e8ecf0;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .team-checkbox-item:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+        
+        .team-checkbox-item input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+        
+        .team-checkbox-item label {
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 12px;
+            color: #2c3e50;
+            flex: 1;
+        }
+        
+        .team-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .team-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        .team-btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .team-btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+        
+        .team-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        
+        .selected-team-label {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            padding: 12px 16px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 13px;
+        }
+        
+        .funnel-section {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+        
+        .funnel-section h3 {
+            color: #2c3e50;
+            margin-bottom: 16px;
+            font-size: 16px;
+            font-weight: 800;
+        }
+        
+        .funnel-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .funnel-stage {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .funnel-label {
+            min-width: 120px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        
+        .funnel-bar-container {
+            flex: 1;
+            min-width: 150px;
+            background: #e8ecf0;
+            border-radius: 6px;
+            height: 36px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .funnel-bar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 11px;
+            transition: width 0.6s ease;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+        
+        .funnel-value {
+            min-width: 100px;
+            text-align: right;
+            font-size: 12px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .deal-card {
+            background: white;
+            border: 2px solid #e8ecf0;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .deal-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+        }
+        
+        .deal-card-header {
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f0f4f7;
+        }
+        
+        .deal-card-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: #2c3e50;
+            margin-bottom: 4px;
+        }
+        
+        .deal-card-subtitle {
+            font-size: 13px;
+            color: #6c757d;
+        }
+        
+        .deal-field {
+            margin-bottom: 12px;
+        }
+        
+        .deal-field-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        
+        .deal-field-value {
+            font-size: 14px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .deal-field input, .deal-field select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e8ecf0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .deal-field input:focus, .deal-field select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .readonly-field {
+            background: #f8fafb;
+            color: #6c757d;
+            font-weight: 600;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 2px solid #e8ecf0;
+            font-size: 14px;
+        }
+        
+        .deal-card-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 2px solid #f0f4f7;
+        }
+        
+        .update-btn {
+            flex: 1;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+        
+        .update-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+        }
+        
+        .update-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .desktop-table {
+            display: none;
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1800px;
+        }
+        
+        th {
+            background: #f8fafb;
+            color: #2c3e50;
+            font-weight: 700;
+            padding: 16px 12px;
+            text-align: left;
+            font-size: 12px;
+            border-bottom: 2px solid #e0e7ed;
+            white-space: nowrap;
+        }
+        
+        td {
+            padding: 16px 12px;
+            border-bottom: 1px solid #f0f4f7;
+            font-size: 13px;
+        }
+        
+        tr:hover {
+            background: rgba(102, 126, 234, 0.02);
+        }
+        
+        .stage-select, .date-input, .text-input, .number-input {
+            padding: 8px 12px;
+            border: 2px solid #e8ecf0;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .loading-spinner {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .success-message, .error-message {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 13px;
+            font-weight: 600;
+            display: none;
+        }
+        
+        .success-message {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            border-left: 4px solid #28a745;
+        }
+        
+        .error-message {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            color: #721c24;
+            border-left: 4px solid #dc3545;
+        }
+        
+        .no-deals {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+        }
+        
+        .no-deals h3 {
+            font-size: 20px;
+            font-weight: 800;
+            color: #2c3e50;
+            margin: 16px 0 8px;
+        }
+        
+        .scroll-hint {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            padding: 10px 16px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #2c3e50;
+            border-left: 4px solid #667eea;
+        }
+        
+        @media (min-width: 768px) {
+            .header {
+                padding: 24px 40px;
+            }
+            
+            .header h1 {
+                font-size: 26px;
+            }
+            
+            .container {
+                padding: 30px 40px;
+            }
+            
+            .stats-bar {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 24px;
+                margin-bottom: 32px;
+            }
+            
+            .stat-card {
+                padding: 28px;
+            }
+            
+            .stat-label {
+                font-size: 13px;
+            }
+            
+            .stat-value {
+                font-size: 36px;
+            }
+            
+            .section-card {
+                padding: 32px;
+                margin-bottom: 32px;
+            }
+            
+            .section-header {
+                margin-bottom: 28px;
+            }
+            
+            .section-header h2 {
+                font-size: 22px;
+            }
+            
+            .desktop-table {
+                display: block;
+            }
+            
+            .mobile-cards {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .desktop-table {
+                display: none;
+            }
+            
+            .mobile-cards {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>📊 Sales Dashboard</h1>
+            <div class="user-info">
+                <div class="user-details">
+                    <div class="user-name" id="userName"></div>
+                    <div class="user-role" id="userRole"></div>
+                </div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- Personal Stats -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-label">Total Leads</div>
+                <div class="stat-value" id="totalDeals">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Pipeline Value</div>
+                <div class="stat-value" id="totalValue">₹0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Expected Revenue</div>
+                <div class="stat-value" id="expectedValue">₹0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Win Rate</div>
+                <div class="stat-value" id="winRate">0%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Avg Deal Size</div>
+                <div class="stat-value" id="avgDealSize">₹0</div>
+            </div>
+        </div>
+        
+        <!-- Personal Funnel -->
+        <div class="section-card">
+            <div class="section-header">
+                <h2>🔄 My Sales Funnel</h2>
+            </div>
+            <div class="funnel-chart" id="personalFunnel"></div>
+        </div>
+        
+        <!-- Forecast Section -->
+        <div class="section-card">
+            <div class="section-header">
+                <h2>📈 Revenue Forecast</h2>
+            </div>
+            <div class="stats-bar">
+                <div class="stat-card">
+                    <div class="stat-label">This Month</div>
+                    <div class="stat-value" id="thisMonthForecast">₹0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Next Month</div>
+                    <div class="stat-value" id="nextMonthForecast">₹0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">This Quarter</div>
+                    <div class="stat-value" id="thisQuarterForecast">₹0</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Team View Section -->
+        <div id="teamViewSection" class="section-card" style="display: none;">
+            <div class="section-header">
+                <h2>👥 Team Performance</h2>
+            </div>
+            
+            <!-- Multi-select Team Members -->
+            <div class="team-select-container">
+                <div class="team-select-header">
+                    <span>📋 Select Team Members:</span>
+                    <div style="display: flex; gap: 8px;">
+                        <button onclick="selectAllTeam()" class="team-btn team-btn-secondary" style="padding: 6px 12px; font-size: 11px;">Select All</button>
+                        <button onclick="clearAllTeam()" class="team-btn team-btn-secondary" style="padding: 6px 12px; font-size: 11px;">Clear</button>
+                    </div>
+                </div>
+                <div id="teamCheckboxes" class="team-checkboxes">
+                    <!-- Checkboxes will be populated here -->
+                </div>
+                <div class="team-actions">
+                    <button onclick="loadMultipleTeamDeals()" class="team-btn team-btn-primary">
+                        📊 Load Team Data
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Team Stats Display -->
+            <div id="teamStatsContainer" style="display: none;">
+                <div class="selected-team-label" id="selectedTeamLabel">
+                    Selected: None
+                </div>
+                
+                <div class="stats-bar">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Leads</div>
+                        <div class="stat-value" id="teamTotalDeals">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Pipeline Value</div>
+                        <div class="stat-value" id="teamTotalValue">₹0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Expected Revenue</div>
+                        <div class="stat-value" id="teamExpectedValue">₹0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Win Rate</div>
+                        <div class="stat-value" id="teamWinRate">0%</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Avg Deal Size</div>
+                        <div class="stat-value" id="teamAvgDealSize">₹0</div>
+                    </div>
+                </div>
+                
+                <!-- Team Funnel -->
+                <div class="funnel-section">
+                    <h3>📊 Team Sales Funnel</h3>
+                    <div class="funnel-chart" id="teamFunnel"></div>
+                </div>
+                
+                <!-- Team Deals Table -->
+                <div style="margin-top: 24px;">
+                    <h3 style="margin-bottom: 16px; color: #2c3e50; font-size: 16px; font-weight: 800;">📋 Team Deals Breakdown</h3>
+                    <div class="scroll-hint">
+                        👉 Scroll right to view all columns
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table id="teamDealsTable">
+                            <thead>
+                                <tr>
+                                    <th>Sales Person</th>
+                                    <th>Hospital</th>
+                                    <th>Contact</th>
+                                    <th>Stage</th>
+                                    <th>Deal Value</th>
+                                    <th>Probability</th>
+                                    <th>Expected Value</th>
+                                    <th>Close Date</th>
+                                    <th>Next Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="teamDealsTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- My Deals Section -->
+        <div class="section-card">
+            <div class="section-header">
+                <h2>💼 My Deals</h2>
+                <button class="refresh-btn" onclick="loadDeals()">🔄 Refresh</button>
+            </div>
+            
+            <div id="successMessage" class="success-message"></div>
+            <div id="errorMessage" class="error-message"></div>
+            
+            <div id="dealsContainer"></div>
+        </div>
+    </div>
+    
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <div>Loading...</div>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication
+        const userName = sessionStorage.getItem('userName');
+        const userEmail = sessionStorage.getItem('userEmail');
+        
+        if (!userName || !userEmail) {
+            sessionStorage.clear();
+            window.location.reload();
+        }
+        
+        let currentDeals = [];
+        let teamMembersData = [];
+        let teamDealsData = [];
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            const userRole = sessionStorage.getItem('userRole');
+            
+            document.getElementById('userName').textContent = userName;
+            document.getElementById('userRole').textContent = userRole;
+            
+            // Show team section for Founders, Business Managers, and Sales Managers
+            if (userRole === 'Founder' || userRole === 'Business Manager' || userRole === 'Sales Manager') {
+                document.getElementById('teamViewSection').style.display = 'block';
+                loadTeamMembers();
+            }
+            
+            loadDeals();
+        });
+        
+        function loadTeamMembers() {
+            const userEmail = sessionStorage.getItem('userEmail');
+            console.log('🔍 Loading team members for:', userEmail);
+            
+            google.script.run
+                .withSuccessHandler(function(result) {
+                    console.log('✅ Team members loaded:', result);
+                    if (result.success && result.teamMembers.length > 0) {
+                        teamMembersData = result.teamMembers;
+                        const container = document.getElementById('teamCheckboxes');
+                        container.innerHTML = '';
+                        
+                        result.teamMembers.forEach((member, index) => {
+                            const checkboxDiv = document.createElement('div');
+                            checkboxDiv.className = 'team-checkbox-item';
+                            checkboxDiv.innerHTML = `
+                                <input type="checkbox" id="team_${index}" value="${member.sheetName}" data-name="${member.name}">
+                                <label for="team_${index}">${member.name} <span style="color: #6c757d; font-size: 10px;">(${member.role})</span></label>
+                            `;
+                            container.appendChild(checkboxDiv);
+                        });
+                        console.log('✅ Team checkboxes created:', result.teamMembers.length);
+                    } else {
+                        console.log('ℹ️ No team members found');
+                    }
+                })
+                .withFailureHandler(function(error) {
+                    console.error('❌ Error loading team members:', error);
+                })
+                .getTeamMembers(userEmail);
+        }
+        
+        function selectAllTeam() {
+            document.querySelectorAll('#teamCheckboxes input[type="checkbox"]').forEach(cb => {
+                cb.checked = true;
+            });
+        }
+        
+        function clearAllTeam() {
+            document.querySelectorAll('#teamCheckboxes input[type="checkbox"]').forEach(cb => {
+                cb.checked = false;
+            });
+            document.getElementById('teamStatsContainer').style.display = 'none';
+        }
+        
+        function loadMultipleTeamDeals() {
+            const selectedCheckboxes = document.querySelectorAll('#teamCheckboxes input[type="checkbox"]:checked');
+            
+            if (selectedCheckboxes.length === 0) {
+                showMessage('error', 'Please select at least one team member');
+                return;
+            }
+            
+            const selectedSheets = Array.from(selectedCheckboxes).map(cb => cb.value);
+            const selectedNames = Array.from(selectedCheckboxes).map(cb => cb.dataset.name);
+            
+            console.log('📊 Loading deals for:', selectedNames);
+            showLoading();
+            
+            // Load deals for all selected members
+            Promise.all(selectedSheets.map(sheetName => 
+                new Promise((resolve, reject) => {
+                    google.script.run
+                        .withSuccessHandler(resolve)
+                        .withFailureHandler(reject)
+                        .getDeals(sheetName);
+                })
+            )).then(results => {
+                hideLoading();
+                console.log('✅ All team data loaded:', results);
+                
+                // Combine all deals with salesperson info
+                const allDeals = [];
+                results.forEach((result, index) => {
+                    if (result.success && result.deals) {
+                        result.deals.forEach(deal => {
+                            allDeals.push({
+                                ...deal,
+                                salesPersonName: selectedNames[index]
+                            });
+                        });
+                    }
+                });
+                
+                teamDealsData = allDeals;
+                console.log('📊 Total team deals:', allDeals.length);
+                
+                // Calculate combined stats
+                const combinedStats = calculateStats(allDeals);
+                const stageBreakdown = calculateStageBreakdown(allDeals);
+                
+                document.getElementById('selectedTeamLabel').textContent = 
+                    `Selected: ${selectedNames.join(', ')} (${selectedCheckboxes.length} member${selectedCheckboxes.length > 1 ? 's' : ''})`;
+                
+                displayTeamStats(combinedStats, stageBreakdown);
+                displayTeamDealsTable(allDeals);
+            }).catch(error => {
+                hideLoading();
+                console.error('❌ Error loading team data:', error);
+                showMessage('error', 'Error loading team data: ' + error);
+            });
+        }
+        
+        function displayTeamStats(stats, stageBreakdown) {
+            document.getElementById('teamStatsContainer').style.display = 'block';
+            
+            document.getElementById('teamTotalDeals').textContent = stats.totalDeals;
+            document.getElementById('teamTotalValue').textContent = '₹' + formatNumber(stats.totalValue);
+            document.getElementById('teamExpectedValue').textContent = '₹' + formatNumber(stats.expectedValue);
+            document.getElementById('teamWinRate').textContent = stats.winRate.toFixed(1) + '%';
+            document.getElementById('teamAvgDealSize').textContent = '₹' + formatNumber(stats.avgDealSize);
+            
+            displayFunnel(stageBreakdown, 'teamFunnel');
+        }
+        
+        function displayTeamDealsTable(deals) {
+            const tbody = document.getElementById('teamDealsTableBody');
+            
+            if (!deals || deals.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; padding: 30px;">No deals found</td></tr>';
+                return;
+            }
+            
+            let html = '';
+            deals.forEach(deal => {
+                const value = parseFloat(deal.dealValue) || parseFloat(deal.budget) || 0;
+                const probability = parseFloat(deal.probability) || calculateProbability(deal.stage);
+                const expectedValue = (value * probability) / 100;
+                
+                html += `
+                    <tr>
+                        <td><strong>${deal.salesPersonName || deal.salesPerson || ''}</strong></td>
+                        <td>${deal.hospitalName || ''}</td>
+                        <td>${deal.contactPerson || ''}</td>
+                        <td><span style="padding: 4px 12px; background: rgba(102, 126, 234, 0.1); border-radius: 6px; font-weight: 600; font-size: 12px;">${deal.stage || 'New'}</span></td>
+                        <td><strong>₹${formatNumber(value)}</strong></td>
+                        <td>${probability}%</td>
+                        <td>₹${formatNumber(expectedValue)}</td>
+                        <td>${deal.closeDate || '-'}</td>
+                        <td>${deal.nextAction || '-'}</td>
+                    </tr>
+                `;
+            });
+            
+            tbody.innerHTML = html;
+        }
+        
+        function logout() {
+            sessionStorage.clear();
+            window.location.reload();
+        }
+        
+        function showLoading() {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+        }
+        
+        function hideLoading() {
+            document.getElementById('loadingOverlay').style.display = 'none';
+        }
+        
+        function showMessage(type, message) {
+            const successDiv = document.getElementById('successMessage');
+            const errorDiv = document.getElementById('errorMessage');
+            
+            if (type === 'success') {
+                successDiv.textContent = message;
+                successDiv.style.display = 'block';
+                errorDiv.style.display = 'none';
+                setTimeout(() => successDiv.style.display = 'none', 3000);
+            } else {
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+                successDiv.style.display = 'none';
+                setTimeout(() => errorDiv.style.display = 'none', 5000);
+            }
+        }
+        
+        function loadDeals() {
+            console.log('🔄 Loading deals...');
+            showLoading();
+            const sheetName = sessionStorage.getItem('sheetName');
+            console.log('Sheet name:', sheetName);
+            
+            google.script.run
+                .withSuccessHandler(function(result) {
+                    console.log('✅ Deals loaded:', result);
+                    hideLoading();
+                    if (result.success) {
+                        currentDeals = result.deals;
+                        displayDeals(result.deals);
+                        const stats = calculateStats(result.deals);
+                        const stageBreakdown = calculateStageBreakdown(result.deals);
+                        updateStats(stats);
+                        displayFunnel(stageBreakdown, 'personalFunnel');
+                        calculateForecast(result.deals);
+                    } else {
+                        showMessage('error', result.message || 'Failed to load deals');
+                    }
+                })
+                .withFailureHandler(function(error) {
+                    console.error('❌ Load error:', error);
+                    hideLoading();
+                    showMessage('error', 'An error occurred while loading deals: ' + error.toString());
+                })
+                .getDeals(sheetName);
+        }
+        
+        function calculateProbability(stage) {
+            switch(stage) {
+                case 'Won': return 100;
+                case 'PO Received': return 90;
+                case 'Negotiation': return 75;
+                case 'Quote Sent': return 60;
+                case 'Quoted': return 50;
+                case 'Demo Done': return 40;
+                case 'Demo Scheduled': return 30;
+                case 'Contacted': return 20;
+                case 'New': return 10;
+                case 'Lost': return 0;
+                default: return 0;
+            }
+        }
+        
+        function calculateStats(deals) {
+            let totalValue = 0;
+            let expectedValue = 0;
+            let wonDeals = 0;
+            let wonValue = 0;
+            
+            deals.forEach(deal => {
+                const value = parseFloat(deal.dealValue) || parseFloat(deal.budget) || 0;
+                totalValue += value;
+                
+                const probability = parseFloat(deal.probability) || calculateProbability(deal.stage);
+                expectedValue += (value * probability) / 100;
+                
+                if (deal.stage === 'Won') {
+                    wonDeals++;
+                    wonValue += value;
+                }
+            });
+            
+            const winRate = deals.length > 0 ? (wonDeals / deals.length) * 100 : 0;
+            const avgDealSize = wonDeals > 0 ? wonValue / wonDeals : (deals.length > 0 ? totalValue / deals.length : 0);
+            
+            return {
+                totalDeals: deals.length,
+                totalValue: totalValue,
+                expectedValue: expectedValue,
+                wonDeals: wonDeals,
+                winRate: winRate,
+                avgDealSize: avgDealSize
+            };
+        }
+        
+        function calculateStageBreakdown(deals) {
+            const stageBreakdown = {};
+            const stages = ['New', 'Contacted', 'Demo Scheduled', 'Demo Done', 'Quoted', 'Quote Sent', 'Negotiation', 'PO Received', 'Won', 'Lost'];
+            
+            stages.forEach(stageName => {
+                stageBreakdown[stageName] = {
+                    count: 0,
+                    totalValue: 0,
+                    expectedValue: 0
+                };
+            });
+            
+            deals.forEach(deal => {
+                const stageName = deal.stage || 'New';
+                if (stageBreakdown[stageName]) {
+                    const value = parseFloat(deal.dealValue) || parseFloat(deal.budget) || 0;
+                    const probability = parseFloat(deal.probability) || calculateProbability(deal.stage);
+                    
+                    stageBreakdown[stageName].count++;
+                    stageBreakdown[stageName].totalValue += value;
+                    stageBreakdown[stageName].expectedValue += (value * probability) / 100;
+                }
+            });
+            
+            return stageBreakdown;
+        }
+        
+        function displayFunnel(stageBreakdown, elementId) {
+            const container = document.getElementById(elementId);
+            const stages = ['New', 'Contacted', 'Demo Scheduled', 'Demo Done', 'Quoted', 'Quote Sent', 'Negotiation', 'PO Received', 'Won'];
+            
+            const maxValue = Math.max(...Object.values(stageBreakdown).map(s => s.totalValue || 0), 1);
+            
+            let html = '';
+            stages.forEach(stage => {
+                const data = stageBreakdown[stage] || { count: 0, totalValue: 0 };
+                const percentage = (data.totalValue / maxValue) * 100;
+                
+                html += `
+                    <div class="funnel-stage">
+                        <div class="funnel-label">${stage}</div>
+                        <div class="funnel-bar-container">
+                            <div class="funnel-bar" style="width: ${percentage}%">
+                                ${data.count > 0 ? data.count : ''}
+                            </div>
+                        </div>
+                        <div class="funnel-value">₹${formatNumber(data.totalValue)}</div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        function updateStats(stats) {
+            document.getElementById('totalDeals').textContent = stats.totalDeals || 0;
+            document.getElementById('totalValue').textContent = '₹' + formatNumber(stats.totalValue || 0);
+            document.getElementById('expectedValue').textContent = '₹' + formatNumber(stats.expectedValue || 0);
+            document.getElementById('winRate').textContent = stats.winRate.toFixed(1) + '%';
+            document.getElementById('avgDealSize').textContent = '₹' + formatNumber(stats.avgDealSize || 0);
+        }
+        
+        function calculateForecast(deals) {
+            const now = new Date();
+            const thisMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+            const thisMonthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+            const nextMonthStart = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+            const nextMonthEnd = new Date(now.getFullYear(), now.getMonth() + 2, 0);
+            
+            const quarterMonth = Math.floor(now.getMonth() / 3) * 3;
+            const thisQuarterStart = new Date(now.getFullYear(), quarterMonth, 1);
+            const thisQuarterEnd = new Date(now.getFullYear(), quarterMonth + 3, 0);
+            
+            let thisMonth = 0;
+            let nextMonth = 0;
+            let thisQuarter = 0;
+            
+            deals.forEach(deal => {
+                const closeDate = deal.closeDate ? new Date(deal.closeDate) : null;
+                const value = parseFloat(deal.dealValue) || parseFloat(deal.budget) || 0;
+                const probability = parseFloat(deal.probability) || calculateProbability(deal.stage);
+                const expectedVal = (value * probability) / 100;
+                
+                if (closeDate) {
+                    if (closeDate >= thisMonthStart && closeDate <= thisMonthEnd) {
+                        thisMonth += expectedVal;
+                    }
+                    if (closeDate >= nextMonthStart && closeDate <= nextMonthEnd) {
+                        nextMonth += expectedVal;
+                    }
+                    if (closeDate >= thisQuarterStart && closeDate <= thisQuarterEnd) {
+                        thisQuarter += expectedVal;
+                    }
+                }
+            });
+            
+            document.getElementById('thisMonthForecast').textContent = '₹' + formatNumber(thisMonth);
+            document.getElementById('nextMonthForecast').textContent = '₹' + formatNumber(nextMonth);
+            document.getElementById('thisQuarterForecast').textContent = '₹' + formatNumber(thisQuarter);
+        }
+        
+        function formatNumber(num) {
+            return new Intl.NumberFormat('en-IN').format(Math.round(num) || 0);
+        }
+        
+        function displayDeals(deals) {
+            const container = document.getElementById('dealsContainer');
+            
+            if (!deals || deals.length === 0) {
+                container.innerHTML = `
+                    <div class="no-deals">
+                        <div style="font-size: 48px; margin-bottom: 16px;">📋</div>
+                        <h3>No deals found</h3>
+                        <p>Your deals will appear here</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Mobile Card View
+            let mobileHTML = '<div class="mobile-cards">';
+            
+            deals.forEach((deal, index) => {
+                const dealValue = parseFloat(deal.dealValue) || parseFloat(deal.budget) || 0;
+                const probability = parseFloat(deal.probability) || calculateProbability(deal.stage);
+                const expectedValue = (dealValue * probability) / 100;
+                
+                mobileHTML += `
+                    <div class="deal-card" id="deal_card_${index}">
+                        <div class="deal-card-header">
+                            <div class="deal-card-title">${deal.hospitalName || 'Untitled Deal'}</div>
+                            <div class="deal-card-subtitle">${deal.contactPerson || ''} ${deal.city ? '• ' + deal.city : ''}</div>
+                        </div>
+                        
+                        <div class="deal-field">
+                            <div class="deal-field-label">Email</div>
+                            <div class="deal-field-value">${deal.email || '-'}</div>
+                        </div>
+                        
+                        <div class="deal-field">
+                            <div class="deal-field-label">Mobile</div>
+                            <div class="deal-field-value">${deal.mobile || '-'}</div>
+                        </div>
+                        
+                        <div class="deal-field">
+                            <div class="deal-field-label">Product</div>
+                            <div class="deal-field-value" style="font-size: 12px;">${deal.product || '-'}</div>
+                        </div>
+                        
+                        <div class="deal-field">
+                            <div class="deal-field-label">Budget</div>
+                            <div class="deal-field-value">${deal.budget ? '₹' + formatNumber(deal.budget) : '-'}</div>
+                        </div>
+                        
+                        <div class="deal-field">
+                            <div class="deal-field-label">Stage</div>
+                            <select class="stage-select" id="stage_${index}" onchange="updateCalculations(${index})">
+                                <option value="">Select</option>
+                                <option value="New" ${deal.stage === 'New' ? 'selected' : ''}>New</option>
+                                <option value="Contacted" ${deal.stage === 'Contacted' ? 'selected' : ''}>Contacted</option>
+                                <option value="Demo Scheduled" ${deal.stage === 'Demo Scheduled' ? 'selected' : ''}>Demo Scheduled</option>
+                                <option value="Demo Done" ${deal.stage === 'Demo Done' ? 'selected' : ''}>Demo Done</option>
+                                <option value="Quoted" ${deal.stage === 'Quoted' ? 'selected' : ''}>Quoted</option>
+                                <option value="Quote Sent" ${deal.stage === 'Quote Sent' ? 'selected' : ''}>Quote Sent</option>
+                                <option value="Negotiation" ${deal.stage === 'Negotiation' ? 'selected' : ''}>Negotiation</option>
+                                <option value="PO Received" ${deal.stage === 'PO Received' ? 'selected' : ''}>PO Received</option>
+                                <option value="Won" ${deal.stage === 'Won' ? 'selected' : ''}>Won</option>
+                                <option value="Lost" ${deal.stage === 'Lost' ? 'selected' : ''}>Lost</option>
+                            </select>
+                        </div>
+                        
+                        <div class="deal-field">
+                            <div class="deal-field-label">Deal Value (₹)</div>
+                            <input type="number" id="dealValue_${index}" class="number-input" 
+                                value="${dealValue || ''}" placeholder="0" onchange="updateCalculations(${index})">
+                        </div>
+                        
+                        <div class="deal-field">
+                            <div class="deal-field-label">Probability</div>
+                            <div class="readonly-field" id="probability_${index}">${probability}%</div>
+                        </div>
+                        
+                        <div class="deal-field">
+                            <div class="deal-field-label">Expected Value</div>
+                            <div class="readonly-field" id="expectedValue_${index}">₹${formatNumber(expectedValue)}</div>
+                        </div>
+                        
+                        <div class="deal-field">
+                            <div class="deal-field-label">Close Date</div>
+                            <input type="date" id="closeDate_${index}" value="${deal.closeDate || ''}">
+                        </div>
+                        
+                        <div class="deal-field">
+                            <div class="deal-field-label">Next Action</div>
+                            <input type="text" id="nextAction_${index}" value="${deal.nextAction || ''}" placeholder="Next action">
+                        </div>
+                        
+                        <div class="deal-field">
+                            <div class="deal-field-label">Notes</div>
+                            <input type="text" id="notes_${index}" value="${deal.notes || ''}" placeholder="Notes">
+                        </div>
+                        
+                        <div class="deal-card-actions">
+                            <button class="update-btn" id="updateBtn_${index}" onclick="updateDeal(${index}, ${deal.rowNumber})">
+                                💾 Update Deal
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            mobileHTML += '</div>';
+            
+            // Desktop Table View
+            let desktopHTML = `
+                <div class="desktop-table">
+                    <div class="scroll-hint">
+                        👉 Scroll horizontally to view all columns
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Hospital</th>
+                                    <th>Contact</th>
+                                    <th>Email</th>
+                                    <th>Mobile</th>
+                                    <th>City</th>
+                                    <th>Product</th>
+                                    <th>Budget</th>
+                                    <th>Stage</th>
+                                    <th>Deal Value</th>
+                                    <th>Probability</th>
+                                    <th>Expected Value</th>
+                                    <th>Close Date</th>
+                                    <th>Next Action</th>
+                                    <th>Notes</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+            
+            deals.forEach((deal, index) => {
+                const dealValue = parseFloat(deal.dealValue) || parseFloat(deal.budget) || 0;
+                const probability = parseFloat(deal.probability) || calculateProbability(deal.stage);
+                const expectedValue = (dealValue * probability) / 100;
+                
+                desktopHTML += `
+                    <tr>
+                        <td>${deal.hospitalName || ''}</td>
+                        <td>${deal.contactPerson || ''}</td>
+                        <td>${deal.email || ''}</td>
+                        <td>${deal.mobile || ''}</td>
+                        <td>${deal.city || ''}</td>
+                        <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${deal.product || ''}</td>
+                        <td>${deal.budget ? '₹' + formatNumber(deal.budget) : ''}</td>
+                        <td>
+                            <select class="stage-select" id="stage_desktop_${index}" onchange="updateCalculationsDesktop(${index})">
+                                <option value="">Select</option>
+                                <option value="New" ${deal.stage === 'New' ? 'selected' : ''}>New</option>
+                                <option value="Contacted" ${deal.stage === 'Contacted' ? 'selected' : ''}>Contacted</option>
+                                <option value="Demo Scheduled" ${deal.stage === 'Demo Scheduled' ? 'selected' : ''}>Demo Scheduled</option>
+                                <option value="Demo Done" ${deal.stage === 'Demo Done' ? 'selected' : ''}>Demo Done</option>
+                                <option value="Quoted" ${deal.stage === 'Quoted' ? 'selected' : ''}>Quoted</option>
+                                <option value="Quote Sent" ${deal.stage === 'Quote Sent' ? 'selected' : ''}>Quote Sent</option>
+                                <option value="Negotiation" ${deal.stage === 'Negotiation' ? 'selected' : ''}>Negotiation</option>
+                                <option value="PO Received" ${deal.stage === 'PO Received' ? 'selected' : ''}>PO Received</option>
+                                <option value="Won" ${deal.stage === 'Won' ? 'selected' : ''}>Won</option>
+                                <option value="Lost" ${deal.stage === 'Lost' ? 'selected' : ''}>Lost</option>
+                            </select>
+                        </td>
+                        <td><input type="number" id="dealValue_desktop_${index}" class="number-input" value="${dealValue || ''}" placeholder="0" onchange="updateCalculationsDesktop(${index})"></td>
+                        <td><div class="readonly-field" id="probability_desktop_${index}">${probability}%</div></td>
+                        <td><div class="readonly-field" id="expectedValue_desktop_${index}">₹${formatNumber(expectedValue)}</div></td>
+                        <td><input type="date" id="closeDate_desktop_${index}" class="date-input" value="${deal.closeDate || ''}"></td>
+                        <td><input type="text" id="nextAction_desktop_${index}" class="text-input" value="${deal.nextAction || ''}" placeholder="Next action"></td>
+                        <td><input type="text" id="notes_desktop_${index}" class="text-input" value="${deal.notes || ''}" placeholder="Notes"></td>
+                        <td><button class="update-btn" id="updateBtn_desktop_${index}" onclick="updateDealDesktop(${index}, ${deal.rowNumber})">Update</button></td>
+                    </tr>
+                `;
+            });
+            
+            desktopHTML += `
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+            
+            container.innerHTML = mobileHTML + desktopHTML;
+        }
+        
+        // MOBILE: Update calculations when stage or deal value changes
+        function updateCalculations(index) {
+            const stage = document.getElementById(`stage_${index}`).value;
+            const value = parseFloat(document.getElementById(`dealValue_${index}`).value) || 0;
+            const prob = calculateProbability(stage);
+            const expected = (value * prob) / 100;
+            
+            document.getElementById(`probability_${index}`).textContent = prob + '%';
+            document.getElementById(`expectedValue_${index}`).textContent = '₹' + formatNumber(expected);
+        }
+        
+        // DESKTOP: Update calculations when stage or deal value changes
+        function updateCalculationsDesktop(index) {
+            const stage = document.getElementById(`stage_desktop_${index}`).value;
+            const value = parseFloat(document.getElementById(`dealValue_desktop_${index}`).value) || 0;
+            const prob = calculateProbability(stage);
+            const expected = (value * prob) / 100;
+            
+            document.getElementById(`probability_desktop_${index}`).textContent = prob + '%';
+            document.getElementById(`expectedValue_desktop_${index}`).textContent = '₹' + formatNumber(expected);
+        }
+        
+        // MOBILE: Update deal
+        function updateDeal(index, rowNumber) {
+            console.log('📝 Updating deal:', index, 'Row:', rowNumber);
+            
+            const sheetName = sessionStorage.getItem('sheetName');
+            const button = document.getElementById(`updateBtn_${index}`);
+            const originalText = button.textContent;
+            
+            button.disabled = true;
+            button.textContent = 'Saving...';
+            
+            // Get values from mobile inputs
+            const stage = document.getElementById(`stage_${index}`).value;
+            const dealValue = document.getElementById(`dealValue_${index}`).value;
+            const closeDate = document.getElementById(`closeDate_${index}`).value;
+            const nextAction = document.getElementById(`nextAction_${index}`).value;
+            const notes = document.getElementById(`notes_${index}`).value;
+            
+            const probability = calculateProbability(stage);
+            
+            const dealData = {
+                stage: stage,
+                stageDate: new Date().toISOString().split('T')[0],
+                nextAction: nextAction,
+                nextDate: '',
+                dealValue: dealValue,
+                probability: probability,
+                closeDate: closeDate,
+                competitor: '',
+                quote: '',
+                po: '',
+                wonDate: stage === 'Won' ? new Date().toISOString().split('T')[0] : '',
+                lostDate: stage === 'Lost' ? new Date().toISOString().split('T')[0] : '',
+                lostReason: '',
+                notes: notes
+            };
+            
+            console.log('📤 Sending data:', { sheetName, rowNumber, dealData });
+            
+            google.script.run
+                .withSuccessHandler(function(result) {
+                    console.log('✅ Update result:', result);
+                    button.disabled = false;
+                    button.textContent = originalText;
+                    
+                    if (result.success) {
+                        showMessage('success', 'Deal updated successfully! (' + (result.updatedFields || 0) + ' fields)');
+                        // Reload deals to show updated data
+                        setTimeout(() => loadDeals(), 1000);
+                    } else {
+                        showMessage('error', result.message || 'Failed to update deal');
+                    }
+                })
+                .withFailureHandler(function(error) {
+                    console.error('❌ Update error:', error);
+                    button.disabled = false;
+                    button.textContent = originalText;
+                    showMessage('error', 'An error occurred: ' + error.toString());
+                })
+                .updateDeal(sheetName, rowNumber, dealData);
+        }
+        
+        // DESKTOP: Update deal
+        function updateDealDesktop(index, rowNumber) {
+            console.log('📝 Updating deal (desktop):', index, 'Row:', rowNumber);
+            
+            const sheetName = sessionStorage.getItem('sheetName');
+            const button = document.getElementById(`updateBtn_desktop_${index}`);
+            const originalText = button.textContent;
+            
+            button.disabled = true;
+            button.textContent = 'Saving...';
+            
+            // Get values from desktop inputs
+            const stage = document.getElementById(`stage_desktop_${index}`).value;
+            const dealValue = document.getElementById(`dealValue_desktop_${index}`).value;
+            const closeDate = document.getElementById(`closeDate_desktop_${index}`).value;
+            const nextAction = document.getElementById(`nextAction_desktop_${index}`).value;
+            const notes = document.getElementById(`notes_desktop_${index}`).value;
+            
+            const probability = calculateProbability(stage);
+            
+            const dealData = {
+                stage: stage,
+                stageDate: new Date().toISOString().split('T')[0],
+                nextAction: nextAction,
+                nextDate: '',
+                dealValue: dealValue,
+                probability: probability,
+                closeDate: closeDate,
+                competitor: '',
+                quote: '',
+                po: '',
+                wonDate: stage === 'Won' ? new Date().toISOString().split('T')[0] : '',
+                lostDate: stage === 'Lost' ? new Date().toISOString().split('T')[0] : '',
+                lostReason: '',
+                notes: notes
+            };
+            
+            console.log('📤 Sending data:', { sheetName, rowNumber, dealData });
+            
+            google.script.run
+                .withSuccessHandler(function(result) {
+                    console.log('✅ Update result:', result);
+                    button.disabled = false;
+                    button.textContent = originalText;
+                    
+                    if (result.success) {
+                        showMessage('success', 'Deal updated successfully! (' + (result.updatedFields || 0) + ' fields)');
+                        // Reload deals to show updated data
+                        setTimeout(() => loadDeals(), 1000);
+                    } else {
+                        showMessage('error', result.message || 'Failed to update deal');
+                    }
+                })
+                .withFailureHandler(function(error) {
+                    console.error('❌ Update error:', error);
+                    button.disabled = false;
+                    button.textContent = originalText;
+                    showMessage('error', 'An error occurred: ' + error.toString());
+                })
+                .updateDeal(sheetName, rowNumber, dealData);
+        }
+    </script>
+</body>
+</html>
