@@ -1,7 +1,7 @@
 // Service Worker for ArrayMed CRM PWA
 // Version 2.0
 
-const CACHE_NAME = 'arraymed-crm-v2';
+const CACHE_NAME = 'arraymed-crm-v3';
 const urlsToCache = [
   '/',
   '/index.html',
