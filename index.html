@@ -3,509 +3,440 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#667eea">
+    <meta name="theme-color" content="#ede4d4">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="ArrayMed CRM">
-    
-    <title>ArrayMed CRM App</title>
-    
+
+    <title>ArrayMed CRM</title>
+
     <!-- PWA Manifest -->
     <link rel="manifest" href="/arraymed-crm-app/manifest.json">
-    
+
     <!-- iOS Icons -->
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23667eea' width='100' height='100' rx='20'/><text x='50' y='70' font-size='60' text-anchor='middle' fill='white' font-family='Arial, sans-serif' font-weight='bold'>A</text></svg>">
-    
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23b5451b' width='100' height='100' rx='20'/><text x='50' y='70' font-size='60' text-anchor='middle' fill='white' font-family='Georgia,serif' font-weight='bold'>A</text></svg>">
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'DM Sans', 'Segoe UI', sans-serif; }
+
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f5efe6;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
         }
-        
-        .header {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 20px;
-            text-align: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .logo {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 15px;
-            background: white;
-            border-radius: 20px;
+
+        /* ── HEADER ── */
+        .app-header {
+            background: #ede4d4;
+            border-bottom: 2px solid #d9cfc0;
+            padding: 18px 24px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            font-weight: bold;
-            color: #667eea;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            gap: 16px;
         }
-        
-        .app-title {
-            color: white;
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 5px;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        .header-logo {
+            width: 48px; height: 48px;
+            background: linear-gradient(135deg, #b5451b, #8b2a0e);
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-family: Georgia, serif;
+            font-size: 26px; font-weight: 900; color: white;
+            box-shadow: 0 4px 14px rgba(181,69,27,0.35);
+            flex-shrink: 0;
         }
-        
-        .app-subtitle {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 14px;
-            font-weight: 500;
+        .header-text h1 {
+            font-size: 20px; font-weight: 800; color: #2c2116; letter-spacing: -0.3px;
         }
-        
+        .header-text h1 span { color: #e8192c; }
+        .header-text p { font-size: 12px; color: #8b7355; margin-top: 1px; }
+
+        /* ── CONTAINER ── */
         .container {
             flex: 1;
-            padding: 30px 20px;
+            padding: 20px 16px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            max-width: 500px;
+            gap: 14px;
+            max-width: 540px;
             margin: 0 auto;
             width: 100%;
         }
-        
-        .card {
-            background: white;
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
+
+        /* ── INSTALL BANNER ── */
+        .install-banner {
+            background: linear-gradient(135deg, #fff8f5, #fdf5ee);
+            border: 2px solid #f0ddd0;
+            border-radius: 14px;
+            padding: 16px 18px;
+            display: none;
+            align-items: center;
+            gap: 14px;
+        }
+        .install-banner.show { display: flex; }
+        .install-banner-icon { font-size: 28px; flex-shrink: 0; }
+        .install-banner-text { flex: 1; }
+        .install-banner-text strong { font-size: 13px; font-weight: 800; color: #2c2116; display: block; }
+        .install-banner-text span { font-size: 11px; color: #8b7355; }
+        .install-btn {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white; border: none;
+            padding: 9px 16px; border-radius: 9px;
+            font-size: 12px; font-weight: 700; cursor: pointer;
+            font-family: inherit; white-space: nowrap;
+            box-shadow: 0 3px 10px rgba(40,167,69,0.3);
+            transition: all 0.2s;
+        }
+        .install-btn:active { transform: scale(0.95); }
+
+        /* ── SECTION LABEL ── */
+        .section-label {
+            font-size: 10px; font-weight: 800; color: #8b7355;
+            text-transform: uppercase; letter-spacing: 0.7px;
+            padding: 0 4px;
+        }
+
+        /* ── ACTION CARD ── */
+        .action-card {
+            background: #fffdf9;
+            border-radius: 16px;
+            border: 1px solid rgba(200,180,150,0.25);
+            box-shadow: 0 4px 20px rgba(90,70,50,0.09);
             overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
+        .action-card:active { transform: scale(0.99); }
+        .action-card-top {
             height: 4px;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
         }
-        
-        .card:active {
-            transform: scale(0.98);
+        .action-card-top.red    { background: linear-gradient(90deg, #b5451b, #e8192c); }
+        .action-card-top.purple { background: linear-gradient(90deg, #667eea, #764ba2); }
+        .action-card-top.green  { background: linear-gradient(90deg, #28a745, #20c997); }
+        .action-card-body { padding: 20px 22px 22px; }
+        .action-card-header {
+            display: flex; align-items: flex-start; gap: 14px; margin-bottom: 12px;
         }
-        
-        .card-icon {
-            font-size: 48px;
-            margin-bottom: 15px;
-            display: block;
+        .action-card-emoji {
+            font-size: 36px; line-height: 1; flex-shrink: 0;
         }
-        
-        .card-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #2c3e50;
-            margin-bottom: 8px;
+        .action-card-info { flex: 1; }
+        .action-card-info h2 {
+            font-size: 16px; font-weight: 800; color: #2c2116;
+            letter-spacing: -0.2px; margin-bottom: 4px;
+            display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
         }
-        
-        .card-description {
-            font-size: 14px;
-            color: #6c757d;
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-        
-        .btn {
-            display: block;
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .badge {
+            font-size: 9px; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 0.5px; padding: 3px 8px; border-radius: 20px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
             color: white;
-            text-decoration: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 700;
-            text-align: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
-        
-        .btn:active {
-            transform: scale(0.95);
+        .action-card-info p {
+            font-size: 12px; color: #8b7355; line-height: 1.55;
         }
-        
-        .btn-secondary {
-            background: #f8f9fa;
-            color: #667eea;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        .action-btn {
+            display: block; width: 100%;
+            padding: 13px 20px;
+            text-decoration: none; text-align: center;
+            border-radius: 11px;
+            font-size: 14px; font-weight: 700;
+            transition: all 0.2s;
+            font-family: inherit;
         }
-        
-        .quick-actions {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px;
-            margin-top: 10px;
+        .action-btn-primary {
+            background: linear-gradient(135deg, #b5451b, #8b2a0e);
+            color: #fff9f0;
+            box-shadow: 0 4px 14px rgba(181,69,27,0.30);
         }
-        
-        .quick-actions-title {
+        .action-btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(181,69,27,0.40); }
+        .action-btn-primary:active { transform: scale(0.97); }
+        .action-btn-purple {
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            opacity: 0.9;
+            box-shadow: 0 4px 14px rgba(102,126,234,0.30);
         }
-        
-        .quick-action-grid {
+        .action-btn-purple:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(102,126,234,0.40); }
+        .action-btn-purple:active { transform: scale(0.97); }
+        .action-btn-ghost {
+            background: #f5ede0;
+            color: #6b5344;
+            border: 2px solid #e8ddd0;
+        }
+        .action-btn-ghost:hover { border-color: #c0392b; color: #c0392b; }
+        .action-btn-ghost:active { transform: scale(0.97); }
+
+        /* ── QUICK ACTIONS ── */
+        .quick-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            gap: 10px;
         }
-        
-        .quick-action {
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            padding: 15px;
+        .quick-tile {
+            background: #fffdf9;
+            border: 1.5px solid #e8ddd0;
+            border-radius: 13px;
+            padding: 16px 12px;
             text-align: center;
-            color: white;
             text-decoration: none;
-            transition: all 0.2s ease;
-            font-size: 13px;
-            font-weight: 600;
+            color: #4a3728;
+            transition: all 0.18s;
+            display: flex; flex-direction: column; align-items: center; gap: 8px;
         }
-        
-        .quick-action:active {
-            background: rgba(255, 255, 255, 0.25);
-            transform: scale(0.95);
+        .quick-tile:hover { border-color: #b5451b; background: #fff8f5; }
+        .quick-tile:active { transform: scale(0.96); }
+        .quick-tile-icon { font-size: 26px; }
+        .quick-tile-label { font-size: 12px; font-weight: 700; color: #4a3728; }
+
+        /* ── DIVIDER ── */
+        .divider {
+            height: 1px; background: #e8ddd0; margin: 4px 0;
         }
-        
-        .quick-action-icon {
-            font-size: 24px;
-            display: block;
-            margin-bottom: 8px;
-        }
-        
-        .footer {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 15px;
-            text-align: center;
-            color: white;
-            font-size: 12px;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .install-prompt {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            display: none;
-        }
-        
-        .install-prompt.show {
-            display: block;
-        }
-        
-        .install-prompt-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-        
-        .install-prompt-text {
-            font-size: 14px;
-            color: #6c757d;
-            margin-bottom: 15px;
-            line-height: 1.5;
-        }
-        
-        .install-btn {
-            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            width: 100%;
-            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
-        }
-        
-        .install-btn:active {
-            transform: scale(0.95);
-        }
-        
-        .badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
-            color: white;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 700;
-            margin-left: 8px;
-            text-transform: uppercase;
-        }
-        
-        @media (min-width: 768px) {
-            .container {
-                padding: 40px;
-            }
-            
-            .card {
-                padding: 35px;
-            }
-        }
-        
-        /* Loading animation */
-        .loading {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(4px);
-            z-index: 9999;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .loading.show {
-            display: flex;
-        }
-        
-        .loading-spinner {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
+
+        /* ── FOOTER ── */
+        .app-footer {
+            background: #ede4d4;
+            border-top: 1px solid #d9cfc0;
+            padding: 14px 20px;
             text-align: center;
         }
-        
+        .app-footer p { font-size: 11px; color: #8b7355; font-weight: 600; }
+        .app-footer span { opacity: 0.6; font-size: 10px; display: block; margin-top: 2px; }
+
+        /* ── LOADING OVERLAY ── */
+        .loading-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(90,70,50,0.35); backdrop-filter: blur(4px);
+            z-index: 9999; align-items: center; justify-content: center;
+        }
+        .loading-overlay.show { display: flex; }
+        .loading-box {
+            background: #fffdf9; padding: 30px 42px; border-radius: 18px;
+            text-align: center; box-shadow: 0 20px 60px rgba(90,70,50,0.2);
+        }
         .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
+            border: 4px solid #ede4d8; border-top: 4px solid #b5451b;
+            border-radius: 50%; width: 40px; height: 40px;
+            animation: spin 1s linear infinite; margin: 0 auto 14px;
         }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .loading-box p { font-weight: 800; color: #4a3728; font-size: 14px; }
+        .loading-box span { font-size: 11px; color: #8b7355; margin-top: 4px; display: block; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @media (min-width: 600px) {
+            .container { padding: 28px 24px; gap: 18px; }
+            .action-card-body { padding: 24px 26px 26px; }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="logo">A</div>
-        <div class="app-title">ArrayMed CRM</div>
-        <div class="app-subtitle">Sales Management System</div>
+
+    <!-- HEADER -->
+    <div class="app-header">
+        <div class="header-logo">A</div>
+        <div class="header-text">
+            <h1>Array<span>Med</span></h1>
+            <p>Sales CRM · Pipeline Management</p>
+        </div>
     </div>
-    
+
     <div class="container">
-        <!-- Install Prompt -->
-        <div class="install-prompt" id="installPrompt">
-            <div class="install-prompt-title">📱 Install App</div>
-            <div class="install-prompt-text">
-                Add ArrayMed CRM to your home screen for quick access and app-like experience!
+
+        <!-- INSTALL BANNER -->
+        <div class="install-banner" id="installBanner">
+            <div class="install-banner-icon">📲</div>
+            <div class="install-banner-text">
+                <strong>Install App</strong>
+                <span>Add to home screen for quick access</span>
             </div>
-            <button class="install-btn" id="installBtn">Install App</button>
+            <button class="install-btn" id="installBtn">Install</button>
         </div>
-        
-        <!-- Main Actions -->
-        <div class="card">
-            <span class="card-icon">📋</span>
-            <h2 class="card-title">Submit New Lead <span class="badge">Quick</span></h2>
-            <p class="card-description">
-                Add a new hospital lead to the system. Takes 2-3 minutes to fill out the form.
-            </p>
-            <a ="https://script.google.com/macros/s/AKfycbzIGbxaF3KrmhJ6_lHB1tSVlrN_dHC8M93EDvi_MGA/dev?form=1" class="btn" target="_blank" onclick="trackClick('Lead Form')">
-                Open Lead Form
-            </a>
-        </div>
-        
-        <div class="card">
-            <span class="card-icon">📊</span>
-            <h2 class="card-title">CRM Dashboard</h2>
-            <p class="card-description">
-                View your pipeline, update deals, check stats, and manage your sales activities.
-            </p>
-            <a href="https://script.google.com/macros/s/AKfycbzIGbxaF3KrmhJ6_lHB1tSVlrN_dHC8M93EDvi_MGA/dev" class="btn" target="_blank" onclick="trackClick('CRM Dashboard')">
-                Open Dashboard
-            </a>
-        </div>
-        
-        <!-- Quick Actions -->
-        <div class="quick-actions">
-            <div class="quick-actions-title">⚡ Quick Actions</div>
-            <div class="quick-action-grid">
-                <a href="https://script.google.com/macros/s/AKfycbzIGbxaF3KrmhJ6_lHB1tSVlrN_dHC8M93EDvi_MGA/dev?form=1" class="quick-action" target="_blank" onclick="trackClick('Quick Lead')">
-                    <span class="quick-action-icon">➕</span>
-                    New Lead
-                </a>
-                <a href="https://tinyurl.com/AMPL-CRM-V2" class="quick-action" target="_blank" onclick="trackClick('Quick Dashboard')">
-                    <span class="quick-action-icon">📈</span>
-                    My Stats
-                </a>
-                <a href="tel:+918000000000" class="quick-action" onclick="trackClick('Call Support')">
-                    <span class="quick-action-icon">📞</span>
-                    Support
-                </a>
-                <a href="mailto:support@arraymed.co.in" class="quick-action" onclick="trackClick('Email Support')">
-                    <span class="quick-action-icon">✉️</span>
-                    Email IT
+
+        <!-- MAIN ACTIONS -->
+        <div class="section-label">Main Actions</div>
+
+        <!-- Submit Lead -->
+        <div class="action-card">
+            <div class="action-card-top red"></div>
+            <div class="action-card-body">
+                <div class="action-card-header">
+                    <div class="action-card-emoji">📋</div>
+                    <div class="action-card-info">
+                        <h2>Submit New Lead <span class="badge">Quick</span></h2>
+                        <p>Add a new hospital lead to the system. Takes 2–3 minutes to fill out the form.</p>
+                    </div>
+                </div>
+                <a href="https://script.google.com/macros/s/AKfycbzIGbxaF3KrmhJ6_lHB1tSVlrN_dHC8M93EDvi_MGA/dev?form=1"
+                   class="action-btn action-btn-primary"
+                   target="_blank"
+                   onclick="trackClick('Lead Form')">
+                    ➕ Open Lead Form
                 </a>
             </div>
         </div>
-        
-        <!-- Help Section -->
-        <div class="card">
-            <span class="card-icon">📚</span>
-            <h2 class="card-title">Need Help?</h2>
-            <p class="card-description">
-                Access the user manual, FAQs, and training resources.
-            </p>
-            <a href="#" class="btn btn-secondary" onclick="showHelp(); return false;">
-                View Help Guide
+
+        <!-- CRM Dashboard -->
+        <div class="action-card">
+            <div class="action-card-top purple"></div>
+            <div class="action-card-body">
+                <div class="action-card-header">
+                    <div class="action-card-emoji">📊</div>
+                    <div class="action-card-info">
+                        <h2>CRM Dashboard</h2>
+                        <p>View your pipeline, update deals, check stats, and manage your sales activities.</p>
+                    </div>
+                </div>
+                <a href="https://script.google.com/macros/s/AKfycbzIGbxaF3KrmhJ6_lHB1tSVlrN_dHC8M93EDvi_MGA/dev"
+                   class="action-btn action-btn-purple"
+                   target="_blank"
+                   onclick="trackClick('CRM Dashboard')">
+                    🔐 Open Dashboard
+                </a>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- QUICK ACTIONS -->
+        <div class="section-label">Quick Actions</div>
+        <div class="quick-grid">
+            <a href="https://script.google.com/macros/s/AKfycbzIGbxaF3KrmhJ6_lHB1tSVlrN_dHC8M93EDvi_MGA/dev?form=1"
+               class="quick-tile" target="_blank" onclick="trackClick('Quick Lead')">
+                <span class="quick-tile-icon">➕</span>
+                <span class="quick-tile-label">New Lead</span>
+            </a>
+            <a href="https://script.google.com/macros/s/AKfycbzIGbxaF3KrmhJ6_lHB1tSVlrN_dHC8M93EDvi_MGA/dev"
+               class="quick-tile" target="_blank" onclick="trackClick('My Stats')">
+                <span class="quick-tile-icon">📈</span>
+                <span class="quick-tile-label">My Stats</span>
+            </a>
+            <a href="tel:+918000000000" class="quick-tile" onclick="trackClick('Call Support')">
+                <span class="quick-tile-icon">📞</span>
+                <span class="quick-tile-label">Support</span>
+            </a>
+            <a href="mailto:support@arraymed.co.in" class="quick-tile" onclick="trackClick('Email Support')">
+                <span class="quick-tile-icon">✉️</span>
+                <span class="quick-tile-label">Email IT</span>
             </a>
         </div>
+
+        <div class="divider"></div>
+
+        <!-- HELP -->
+        <div class="action-card">
+            <div class="action-card-top green"></div>
+            <div class="action-card-body">
+                <div class="action-card-header">
+                    <div class="action-card-emoji">📚</div>
+                    <div class="action-card-info">
+                        <h2>Need Help?</h2>
+                        <p>Access the user manual, FAQs, and training resources for the CRM.</p>
+                    </div>
+                </div>
+                <a href="#" class="action-btn action-btn-ghost" onclick="showHelp(); return false;">
+                    View Help Guide
+                </a>
+            </div>
+        </div>
+
     </div>
-    
-    <div class="footer">
-        <div>ArrayMed Private Limited</div>
-        <div style="opacity: 0.7; margin-top: 5px;">© 2026 - Sales CRM v2.0</div>
+
+    <!-- FOOTER -->
+    <div class="app-footer">
+        <p>ArrayMed Private Limited</p>
+        <span>© 2026 · Sales CRM v2.0</span>
     </div>
-    
-    <!-- Loading Overlay -->
-    <div class="loading" id="loading">
-        <div class="loading-spinner">
+
+    <!-- LOADING OVERLAY -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-box">
             <div class="spinner"></div>
-            <div>Opening...</div>
+            <p>Opening…</p>
+            <span>Please wait</span>
         </div>
     </div>
 
     <script>
-        // PWA Install functionality
+        // ── PWA Install ─────────────────────────────────────────
         let deferredPrompt;
-        const installPrompt = document.getElementById('installPrompt');
+        const banner     = document.getElementById('installBanner');
         const installBtn = document.getElementById('installBtn');
-        
-        // Check if already installed
+
         if (window.matchMedia('(display-mode: standalone)').matches) {
-            console.log('App is installed');
+            // Already installed — hide banner
+            banner.style.display = 'none';
         } else {
-            // Show install prompt for supported browsers
             window.addEventListener('beforeinstallprompt', (e) => {
                 e.preventDefault();
                 deferredPrompt = e;
-                installPrompt.classList.add('show');
+                banner.classList.add('show');
             });
         }
-        
-        // Install button click
+
         installBtn.addEventListener('click', async () => {
             if (!deferredPrompt) {
-                // For iOS, show manual instructions
-                if (isIOS()) {
-                    showIOSInstallInstructions();
-                    return;
-                }
-                alert('Installation not available. Please use Chrome or Safari.');
+                if (isIOS()) { showIOSInstructions(); return; }
+                alert('To install: open in Chrome or Safari and use "Add to Home Screen".');
                 return;
             }
-            
             deferredPrompt.prompt();
             const { outcome } = await deferredPrompt.userChoice;
-            
-            if (outcome === 'accepted') {
-                console.log('App installed');
-                installPrompt.classList.remove('show');
-            }
-            
+            if (outcome === 'accepted') banner.classList.remove('show');
             deferredPrompt = null;
         });
-        
-        // Detect iOS
+
         function isIOS() {
             return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
         }
-        
-        // iOS install instructions
-        function showIOSInstallInstructions() {
-            alert('To install on iOS:\n\n1. Tap the Share button (⬆️)\n2. Scroll down and tap "Add to Home Screen"\n3. Tap "Add" in the top right');
+        function showIOSInstructions() {
+            alert('To install on iPhone/iPad:\n\n1. Tap the Share button ⬆️\n2. Tap "Add to Home Screen"\n3. Tap "Add"');
         }
-        
-        // Track clicks (for analytics)
+
+        // ── Click tracking + loading flash ─────────────────────
         function trackClick(action) {
             console.log('User clicked:', action);
-            // You can integrate with Google Analytics here
-            
-            // Show loading briefly
-            const loading = document.getElementById('loading');
-            loading.classList.add('show');
-            setTimeout(() => {
-                loading.classList.remove('show');
-            }, 500);
+            const ov = document.getElementById('loadingOverlay');
+            ov.classList.add('show');
+            setTimeout(() => ov.classList.remove('show'), 600);
         }
-        
-        // Show help
+
+        // ── Help ────────────────────────────────────────────────
         function showHelp() {
-            alert('Help Resources:\n\n' +
-                  '📖 User Manual - Check your email\n' +
-                  '❓ FAQs - Contact your manager\n' +
-                  '🎓 Training - Weekly sessions\n' +
-                  '📞 Support - support@arraymed.co.in\n\n' +
-                  'For urgent issues, contact IT immediately.');
+            alert(
+                'Help Resources\n\n' +
+                '📖 User Manual — Check your email\n' +
+                '❓ FAQs — Ask your manager\n' +
+                '🎓 Training — Weekly sessions (check calendar)\n' +
+                '📞 Phone Support — Call your IT contact\n' +
+                '✉️ Email — support@arraymed.co.in\n\n' +
+                'For urgent issues contact IT immediately.'
+            );
         }
-        
-        // Service Worker Registration
+
+        // ── Service Worker ──────────────────────────────────────
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/arraymed-crm-app/service-worker.js')
-                    .then(registration => {
-                        console.log('SW registered:', registration);
-                    })
-                    .catch(error => {
-                        console.log('SW registration failed:', error);
-                    });
+                    .then(r => console.log('SW registered:', r))
+                    .catch(e => console.log('SW failed:', e));
             });
         }
-        
-        // Add haptic feedback on iOS
-        document.querySelectorAll('.btn, .quick-action').forEach(element => {
-            element.addEventListener('touchstart', () => {
-                if (navigator.vibrate) {
-                    navigator.vibrate(10);
-                }
-            });
+
+        // ── Haptic feedback on iOS ──────────────────────────────
+        document.querySelectorAll('.action-btn, .quick-tile').forEach(el => {
+            el.addEventListener('touchstart', () => {
+                if (navigator.vibrate) navigator.vibrate(10);
+            }, { passive: true });
         });
-        
-        // Prevent zoom on double-tap (iOS)
-        let lastTouchEnd = 0;
-        document.addEventListener('touchend', (event) => {
+
+        // ── Prevent double-tap zoom on iOS ──────────────────────
+        let lastTouch = 0;
+        document.addEventListener('touchend', (e) => {
             const now = Date.now();
-            if (now - lastTouchEnd <= 300) {
-                event.preventDefault();
-            }
-            lastTouchEnd = now;
+            if (now - lastTouch <= 300) e.preventDefault();
+            lastTouch = now;
         }, false);
     </script>
 </body>
